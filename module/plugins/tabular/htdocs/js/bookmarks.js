@@ -1,12 +1,9 @@
-function add_new_bookmark(page){
+function add_new_bookmark(name, uri){
     console.log('We will try to save the user bookmark');
-    var f = document.forms['bookmark_save'];
-    var name = f.bookmark_name.value;
     if (name==''){return;}
 
     console.log('Saving a bookmark with'+name);
 
-    var uri = get_current_search(page);
     console.log('With the URI'+uri);
 
     var b = {'name' : name, 'uri' : uri};
@@ -21,7 +18,7 @@ function add_new_bookmark(page){
         save_bookmarks();
     }
     else { alert('This bookmark name already exists !');}
-
+    
 }
 
 function save_bookmarks(){
@@ -72,22 +69,16 @@ function declare_bookmarksro(name, uri){
 
 function refresh_bookmarks(){
     if(bookmarks.length == 0){
-        $('#bookmarks').html('<h4>No bookmarks</h4>')
+        $('#bookmarks').html('<h4>No saved filters</h4>')
         return;
     }
 
-    s = '<h3>Your bookmarks</h3> <ul class="unstyled">'
+    s = '<h3>Your filters</h3> <ul class="unstyled">'
     $.each(bookmarks, function(idx, b){
         l = '<span><a href="'+b.uri+'"><i class="icon-tag"></i> '+b.name+'</a></span>';
         fun = "delete_bookmark('"+b.name+"');";
-        c = '<span><a href="javascript:'+fun+'" class="close">&times;</a></span>';
-        if (advfct == 1) {
-                fun2 = "push_to_common_bookmarks('"+b.name+"','"+b.uri+"');";
-                c2 = '<span><a href="javascript:'+fun2+'" class="close">&plus;</a></span>';
-        }
-        else { c2 =""; }
-
-        s+= '<li>'+l+c+c2+'</li>';
+        c = '<span><a href="javascript:'+fun+'" style="float:right;opacity:0.6;"><i class="icon-remove"></i></a></span>';
+        s+= '<li>'+l+c+'</li>';
     });
     $('#bookmarks').html(s);
 }

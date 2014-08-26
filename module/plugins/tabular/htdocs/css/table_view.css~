@@ -5,7 +5,7 @@
 
 
 /* Move the tool bar from the show/hide button */
-#toolbar-ext{
+#toolbar{
     padding-top: 30px;
 }
 
@@ -33,29 +33,36 @@
 .actions {}
 
 
-.tableCriticity .tick {
-    border-radius: 1px;
-    border: 1px solid #C6C6C6;
-    height: 11px;
-    margin: 4px 4px 0 1px;
-    width: 11px;
+.tabular_table .tick {
+    min-width: 16px;
 }
 
-.tableCriticity .tick .img_tick{
+
+
+.tabular_table .tick .img_tick{
     max-width: none;
     height: 15px;
     width : 15px;
     /* Make the image a bit more center :p*/
-    margin-top : -5px;
+    margin-top : -12px;
     margin-left : -2px;
 }
 
+.tabular_table .tick div{
+    height: 10px;
+    outline: 0;
+    width: 10px;
+    left: 2px;
+    position: relative;
+    top: 2px;
+    border: 1px solid rgba(155,155,155,.57);
+}
 
 .tableCriticity .img_status{
     margin-right: 6px;
     margin-left : 6px;
     width:20px;
-    background: white;
+    /*background: white;*/
 }
 
 .tableCriticity .img_status img{
@@ -66,31 +73,31 @@
 
 .tableCriticity .hostname{
     width: 120px;
-    background: white;
+    /*background: white;*/
 }
 .tableCriticity .srvdescription{
     width: 120px;
-    background: white;
+    /*background: white;*/
 }
-.tableCriticity .txt_status{
-    width: 100px;
+.tabular_table .txt_status{
+    color:#fff;
     text-align:center;
-    border-radius: 2px;
+    /*border-radius: 2px;*/
 }
 .tableCriticity .duration{
     width:50px;
     text-align:center;
-    background: white;
+    /*background: white;*/
     margin-left : 5px;
 }
 .tableCriticity .output{
     width:400px;
-    background: white;
+    /*background: white;*/
     margin-left : 5px;
 }
 .tableCriticity .expand{
     max-width: 20px;
-    background: white;
+    /*background: white;*/
 }
 
 .tableCriticity .expand img{
@@ -106,25 +113,25 @@ States
 
 
 .state_down, .state_critical{
- background-color: #FF858B;
+ background-color: #FF858B!important;
 }
 
 .state_warning{
- background-color: #E3B778;
+ background-color: #E3B778!important;
 }
 
 .state_ok, .state_up{
- background-color: #8EE378;
+ background-color: #8EE378!important;
 }
 
 .state_unknown, .state_unreachable{
- background-color: #78CCE3;
+ background-color: #78CCE3!important;
 }
 
 
 
 .in_panel_filter{
-    background-color : white;
+    /*background-color : white;*/
     margin : 10px;
     padding : 10px;
     border-radius: 4px;

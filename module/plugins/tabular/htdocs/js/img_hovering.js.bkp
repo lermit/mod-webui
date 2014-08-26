@@ -56,7 +56,7 @@ function display_hover_img(src, alt){
     var pagehigth = document.documentElement.clientHeight;
 
     // We remove the previous image in it
-    div.empty();//innerHTML = '';
+    div.empty();
 
     // If we are too much on the left, put the image a bit
     // before so we are sure it fill on the page without
@@ -77,7 +77,6 @@ function display_hover_img(src, alt){
 
 
     // Ok, let apply our positions!
-    //alert('Set div'+div+'to'+pos_x +'px');
     div.css('left', pos_x +'px');
     div.css('top', pos_y +'px');
 
@@ -97,7 +96,6 @@ function hide_hover_img(){
 
 // When we move, we save our mouse position, both
 // absolute and relative
-//window.addEvent('domready', function(){
 $(document).ready(function(){
     document.onmousemove = function(e){
 	// Some fuck.. browser do not support pageX

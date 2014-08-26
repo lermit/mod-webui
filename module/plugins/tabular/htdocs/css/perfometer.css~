@@ -1,12 +1,8 @@
 
 .perfometer {
     padding: 0;
-    width: 120px;
-    max-height : 19px;
-    min-width : 120px;
     text-align: center;
     border: none;
-    background: white;
 }
 
 

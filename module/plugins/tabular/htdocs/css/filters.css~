@@ -33,3 +33,25 @@
 .downtime_filter_color{
     background-color : #E10C02;
 }
+
+
+
+
+#filtering select{
+    width:auto;
+}
+
+.filter_value_panel{
+    position:absolute;
+}
+
+
+
+
+#filtering_cont{
+font-size: 11px;
+}
+
+#filtering_cont select{
+font-size: 11px;
+}

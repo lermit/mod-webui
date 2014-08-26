@@ -1,0 +1,146 @@
+.filter_color {
+    display: block;
+    float: left;
+    margin-top : 2px;
+    margin-left:  5px;
+    margin-right: 4px;
+    width: 6px;
+    height: 15px;
+    border-radius: 2px;
+}
+
+.hst_srv_filter_color{
+    background-color: #02E10C;
+}
+
+.hg_filter_color {
+    background-color: #787878;
+}
+
+.realm_filter_color {
+    background-color: #D7E102;
+}
+
+.htag_filter_color {
+    background-color: #0b02e1;
+}
+
+
+.ack_filter_color {
+    background-color: #EDEDED;
+}
+
+.downtime_filter_color{
+    background-color : #E10C02;
+}
+
+
+
+
+#filtering select{
+    width:auto;
+}
+
+#filtering .select-type{
+    width:120px;
+}
+
+#filtering .select-op{
+    width:45px;
+}
+
+#filtering .input-value{
+    margin-top:-10px;
+}
+
+.filter_value_panel{
+    position:absolute;
+    z-index: 3000;
+}
+
+
+#filters_panel_cont{
+    position:relative;
+}
+
+#filtering_cont{
+font-size: 11px;
+}
+
+#filtering_cont select{
+font-size: 11px;
+}
+
+
+#filters_apply_btn{
+    position:absolute;
+    float:right;
+    right:10px;
+    top:10px;
+}
+
+#filters_remove_filter_F_btn{
+    position:absolute;
+    float:right;
+    right:5px;
+    top:0px;
+    opacity:0.6;
+}
+
+
+.filters_panel_table{
+    /*margin-top:-30px;*/
+}
+
+.filters_F{
+    position:relative;
+    border-radius:0px;
+    margin:0px;
+    margin-left:5px!important;
+}
+
+.add_filter_F_link{
+    position:absolute;
+    float:right;
+    right:5px;
+    top:100px;
+    opacity:0.6;
+
+}
+
+.add_filter_K_cont{
+    min-height:20px!important;
+    cursor:pointer;
+    opacity:0.6;
+}
+
+.add_filter_K_link{
+    position:absolute;
+    float:right;
+    right:50%;
+}
+
+.add_filter_K_cont:hover{
+    background-color:#3a3f44;
+}
+
+.span_type_static{
+    width:120px!important;
+}
+
+.p-sumup{
+    min-width:150px;
+}
+
+.p-sumup:hover{
+    background-color:#3a3f44;
+}
+
+
+#save_search_close_btn{
+    position:absolute;
+    float:right;
+    right:5px;
+    top:0px;
+    opacity:0.6;
+}
