@@ -57,7 +57,7 @@ Invalid element name
 %breadcrumb = [ ['All services', '/services-groups'], [elt.host.host_name, '/host/'+elt.host.host_name], [elt.service_description, '/service/'+elt.host.host_name+'/'+elt.service_description] ]
 %end
 
-%rebase layout title=elt_type.capitalize() + ' ' + elt.get_full_name(), js=['eltdetail/js/jquery.color.js', 'eltdetail/js/bootstrap-switch.js', 'eltdetail/js/jquery.Jcrop.js', 'eltdetail/js/hide.js', 'eltdetail/js/dollar.js', 'eltdetail/js/gesture.js', 'eltdetail/js/graphs.js', 'eltdetail/js/depgraph.js', 'eltdetail/js/custom_views.js', 'eltdetail/js/screenfull.js', 'eltdetail/js/shinken-gauge.js', 'eltdetail/js/timeline.js', 'timeline/js/timeline.js', 'eltdetail/js/history.js'], css=['eltdetail/css/bootstrap-switch.css', 'eltdetail/css/eltdetail.css', 'eltdetail/css/hide.css', 'eltdetail/css/gesture.css', 'eltdetail/css/jquery.Jcrop.css', 'eltdetail/css/shinken-gauge.css', 'timeline/css/timeline.css'], user=user, app=app, refresh=True, breadcrumb=breadcrumb
+%rebase layout title=elt_type.capitalize() + ' ' + elt.get_full_name(), js=['eltdetail/js/jquery.color.js', 'eltdetail/js/bootstrap-switch.js', 'eltdetail/js/jquery.Jcrop.js', 'eltdetail/js/hide.js', 'eltdetail/js/dollar.js', 'eltdetail/js/gesture.js', 'eltdetail/js/graphs.js', 'eltdetail/js/depgraph.js', 'eltdetail/js/custom_views.js', 'eltdetail/js/screenfull.js', 'eltdetail/js/shinken-gauge.js', 'eltdetail/js/timeline.js', 'timeline/js/timeline.js', 'eltdetail/js/history.js', 'eltdetail/js/dygraph-combined.js', 'eltdetail/js/graphite-to-dygraph.js'], css=['eltdetail/css/bootstrap-switch.css', 'eltdetail/css/eltdetail.css', 'eltdetail/css/hide.css', 'eltdetail/css/gesture.css', 'eltdetail/css/jquery.Jcrop.css', 'eltdetail/css/shinken-gauge.css', 'timeline/css/timeline.css'], user=user, app=app, refresh=True, breadcrumb=breadcrumb
 
 <script type="text/javascript">
 	var elt_name = '{{elt.get_full_name()}}';
@@ -120,6 +120,13 @@ Invalid element name
       lessAni: 2000
     });
   });
+
+  var dygraph_graphs = [];
+  function setHTML(graph_url) {
+    $.each(dygraph_graphs, function(key,value) {
+      updateDygraph(value, graph_url);
+    })
+  }
 </script>
 
 
@@ -1238,7 +1245,7 @@ Invalid element name
 				%if params['tab_graphs']=='yes':
 				<div class="tab-pane fade" id="graphs">
           %# Set source as '' or module ui-graphite will try to fetch templates from default 'detail'
-					%uris = app.get_graph_uris(elt, graphstart, graphend, '')
+					%uris = app.get_graph_uris(elt, graphstart, graphend)
 					%if len(uris) == 0:
 					<div class="alert alert-info">
 					    <div class="font-blue"><strong>Oh snap!</strong> No graphs available!</div>
@@ -1259,102 +1266,44 @@ Invalid element name
 
 						%# Let's get all the uris at once.
             %# Set source as '' or module ui-graphite will trye to fetch from default 'detail'
-						%uris_4h = app.get_graph_uris(elt, fourhours, now, '')
-						%uris_1d = app.get_graph_uris(elt, lastday, now, '')
-						%uris_1w = app.get_graph_uris(elt, lastweek, now, '')
-						%uris_1m = app.get_graph_uris(elt, lastmonth, now, '')
-						%uris_1y = app.get_graph_uris(elt, lastyear, now, '')
+						%uris_4h = app.get_graph_uris(elt, fourhours, now)
+						%uris_1d = app.get_graph_uris(elt, lastday, now)
+						%uris_1w = app.get_graph_uris(elt, lastweek, now)
+						%uris_1m = app.get_graph_uris(elt, lastmonth, now)
+						%uris_1y = app.get_graph_uris(elt, lastyear, now)
 
 						<!-- Use of javascript to change the content of a div!-->
-						<div class='col-lg-2 cursor'><a onclick="setHTML(html_4h,{{fourhours}});" > 4 hours</a></div>
-						<div class='col-lg-2 cursor'><a onclick="setHTML(html_1d,{{lastday}});" > 1 day</a></div>
-						<div class='col-lg-2 cursor'><a onclick="setHTML(html_1w,{{lastweek}});" > 1 week</a></div>
-						<div class='col-lg-2 cursor'><a onclick="setHTML(html_1m,{{lastmonth}});" > 1 month</a></div>
-						<div class='col-lg-2 cursor'><a onclick="setHTML(html_1y,{{lastyear}});" > 1 year</a></div>
+						<div class='col-lg-2 cursor'><a onclick="setHTML({{fourhours}});" > 4 hours</a></div>
+						<div class='col-lg-2 cursor'><a onclick="setHTML({{lastday}});" > 1 day</a></div>
+						<div class='col-lg-2 cursor'><a onclick="setHTML({{lastweek}});" > 1 week</a></div>
+						<div class='col-lg-2 cursor'><a onclick="setHTML({{lastmonth}});" > 1 month</a></div>
+						<div class='col-lg-2 cursor'><a onclick="setHTML({{lastyear}});" > 1 year</a></div>
 					</div>
-
-					<script language="javascript">
-					function setHTML(html,start) {
-						<!-- change the content of the div --!>
-						document.getElementById("real_graphs").innerHTML=html;
-
-						<!-- and call the jcrop javascript --!>
-						$('.jcropelt').Jcrop({
-							onSelect: update_coords,
-							onChange: update_coords
-						});
-						graphstart=start;
-						get_range();
-					}
-
-					<!-- let's create the html content for each time range --!>
-					<!-- This is quite ugly here. I do the same thing 4 times --!->
-					<!-- someone said "function" ? You're right.--!>
-					<!-- but the mix between python and javascript is not a easy thing for me --!>
-					html_4h='<p>';
-					html_1d='<p>';
-					html_1w='<p>';
-					html_1m='<p>';
-					html_1y='<p>';
-
-					%for g in uris_4h:
-					%(img_src, link) = app.get_graph_img_src( g['img_src'], g['link'])
-					var img_src="{{img_src}}";
-					html_4h = html_4h + '<img src="'+ img_src.replace("'","\'") +'" class="jcropelt"/>';
-					html_4h = html_4h + '<a href="{{link}}" class="btn"><i class="fa fa-plus"></i> Show more</a>';
-					html_4h = html_4h + '<a href="javascript:graph_zoom(\'/{{elt_type}}/{{elt.get_full_name()}}?\')" class="btn"><i class="icon-zoom-in"></i> Zoom</a>';
-					html_4h = html_4h + '<br>';
-					%end
-					html_4h=html_4h+'</p>';
-
-					%for g in uris_1d:
-					%(img_src, link) = app.get_graph_img_src( g['img_src'], g['link'])
-					var img_src="{{img_src}}";
-					html_1d = html_1d +'<img src="'+ img_src.replace("'","\'") +'" class="jcropelt"/>';
-					html_1d = html_1d + '<a href={{link}}" class="btn"><i class="fa fa-plus"></i> Show more</a>';
-					html_1d = html_1d + '<a href="javascript:graph_zoom(\'/{{elt_type}}/{{elt.get_full_name()}}?\')" class="btn"><i class="icon-zoom-in"></i> Zoom</a>';
-					html_1d = html_1d + '<br>';
-					%end
-					html_1d=html_1d+'</p>';
-
-					%for g in uris_1w:
-					%(img_src, link) = app.get_graph_img_src( g['img_src'], g['link'])
-					var img_src="{{img_src}}";
-					html_1w = html_1w + '<img src="'+ img_src.replace("'","\'") +'" class="jcropelt"/>';
-					html_1w = html_1w + '<a href="{{link}}" class="btn"><i class="fa fa-plus"></i> Show more</a>';
-					html_1w = html_1w + '<a href="javascript:graph_zoom(\'/{{elt_type}}/{{elt.get_full_name()}}?\')" class="btn"><i class="icon-zoom-in"></i> Zoom</a>';
-					html_1w = html_1w + '<br>';
-					%end
-
-					%for g in uris_1m:
-					%(img_src, link) = app.get_graph_img_src( g['img_src'], g['link'])
-					var img_src="{{img_src}}";
-					html_1m = html_1m + '<img src="'+ img_src.replace("'","\'") +'" class="jcropelt"/>';
-					html_1m = html_1m + '<a href="{{link}}" class="btn"><i class="fa fa-plus"></i> Show more</a>';
-					html_1m = html_1m + '<a href="javascript:graph_zoom(\'/{{elt_type}}/{{elt.get_full_name()}}?\')" class="btn"><i class="icon-zoom-in"></i> Zoom</a>';
-					html_1m = html_1m + '<br>';
-					%end
-
-					%for g in uris_1y:
-					%(img_src, link) = app.get_graph_img_src( g['img_src'], g['link'])
-					var img_src="{{img_src}}";
-					html_1y = html_1y + '<img src="'+ img_src.replace("'","\'") +'" class="jcropelt"/>';
-					html_1y = html_1y + '<a href="{{link}}" class="btn"><i class="fa fa-plus"></i> Show more</a>';
-					html_1y = html_1y + '<a href="javascript:graph_zoom(\'/{{elt_type}}/{{elt.get_full_name()}}?\')" class="btn"><i class="icon-zoom-in"></i> Zoom</a>';
-					html_1y = html_1y + '<br>';
-					%end
-					</script>
 
 					<div class='row-fluid well col-lg-12 jcrop'>
 						<div id='real_graphs'>
 						<!-- Let's keep this part visible. This is the custom and default range -->
+            %id = 0
 						%for g in uris:
 							%(img_src, link) = app.get_graph_img_src( g['img_src'], g['link'])
-							<p>
-								<img src="{{img_src}}" class="jcropelt"/>
-								<a href="{{link}}" class="btn"><i class="fa fa-plus"></i> Show more</a>
-								<a href="javascript:graph_zoom('/{{elt_type}}/{{elt.get_full_name()}}?')" class="btn"><i class="icon-zoom-in"></i> Zoom</a>
-							</p>
+              %# Compute graph name
+              % b=img_src[img_src.find('target=')+7:] ; a=b[:b.find('&')] ; graph_name=a[a.rfind('.')+1:]
+              <div id="dygraph{{id}}" style="width: 100%; height:300px;"><img src="{{img_src}}" class="jcropelt"/></div>
+              <script>
+                  createDygraph({
+                    url: '{{img_src}}',
+                    targetDiv: 'dygraph{{id}}',
+                    graphName: '{{ graph_name }}',
+                    other_urls: {
+                      '{{fourhours}}': '{{ uris_4h[id]['img_src'] }}',
+                      '{{lastday}}': '{{ uris_1d[id]['img_src'] }}',
+                      '{{lastweek}}': '{{ uris_1w[id]['img_src'] }}',
+                      '{{lastmonth}}': '{{ uris_1m[id]['img_src'] }}',
+                      '{{lastyear}}': '{{ uris_1y[id]['img_src'] }}',
+                    },
+                  });
+              </script>
+              %id = id + 1
 						%end      
 						</div>
 					</div>
