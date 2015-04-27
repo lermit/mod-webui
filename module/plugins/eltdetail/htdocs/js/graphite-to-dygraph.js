@@ -6,7 +6,7 @@ function graphiteDataToDygraph(result) {
     //"Headers for native format(Array) must be specified via the labels option.
     //There's no other way to set them. -http://dygraphs.com/data.html#array"
     target=item.target.split('.');
-    graphLabels.push(target[3]);
+    graphLabels.push(target[2]);
 
     //fill out the array with the metrics
     $.each(item["datapoints"], function(key, val) {
@@ -43,7 +43,10 @@ function graphiteDataToDygraph(result) {
     }
   }
 
-  return dygraphData;
+  return {
+    dygraphData: dygraphData,
+    graphLabels: graphLabels
+  };
 }
 
 function createDygraph(params){
@@ -61,7 +64,9 @@ function createDygraph(params){
   //Get JSON data from Graphite
   $.getJSON(url, function(result){
 
-    dygraphData = graphiteDataToDygraph(result);
+    returns = graphiteDataToDygraph(result);
+    dygraphData = returns.dygraphData;
+    graphLabels = returns.graphLabels;
 
     //You have the data Array now, so construct the graph:
     g = new Dygraph(
@@ -77,6 +82,8 @@ function createDygraph(params){
         showRoller: true,
         // Force to display the 0
         includeZero: true,
+        labels: graphLabels,
+        xlabel: params.graphName,
         labelsDivStyles: {
                 'text-align': 'right',
                 'background': 'none'
@@ -94,9 +101,9 @@ function updateDygraph(dygraph, new_url){
   url = dygraph.other_urls[new_url] + '&format=json&jsonp=?';
 
   $.getJSON(url, function(result){
-    dygraphData = graphiteDataToDygraph(result);
+    returns = graphiteDataToDygraph(result);
     dygraph.updateOptions({
-      file: dygraphData
+      file: returns.dygraphData,
     });
   });
 }
