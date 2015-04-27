@@ -1290,6 +1290,7 @@ Invalid element name
               % b=img_src[img_src.find('target=')+7:] ; a=b[:b.find('&')] ; graph_name=a[a.rfind('.')+1:]
               <div id="dygraph{{id}}" style="width: 100%; height:300px;"><img src="{{img_src}}" class="jcropelt"/></div>
               <script>
+                $( window ).load(function() {
                   createDygraph({
                     url: '{{img_src}}',
                     targetDiv: 'dygraph{{id}}',
@@ -1302,9 +1303,10 @@ Invalid element name
                       '{{lastyear}}': '{{ uris_1y[id]['img_src'] }}',
                     },
                   });
+                }
               </script>
               %id = id + 1
-						%end      
+						%end
 						</div>
 					</div>
 					%end
